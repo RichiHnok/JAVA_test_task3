@@ -1,4 +1,4 @@
-package com.figures;
+package com.figures_pack;
 
 import static org.junit.Assert.assertTrue;
 
