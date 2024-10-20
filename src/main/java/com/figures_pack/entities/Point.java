@@ -1,22 +1,16 @@
 package com.figures_pack.entities;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
-import com.figures_pack.configs.PropertiesClass;
+import com.figures_pack.configs.ConfigLoader;
+import com.figures_pack.other.AreDoublesEqual;
 
 public class Point {
 
-	private Double x;
-	private Double y;
+	private double x;
+	private double y;
 
-	private static final NumberFormat FORMATTER;
-	private static final double EPSILON;
-
-	static{
-		String epsilonString = PropertiesClass.props.getProperty("epsilon");
-		EPSILON = Double.parseDouble(epsilonString);
-		FORMATTER = new DecimalFormat("#" + epsilonString.substring(0, epsilonString.length() - 1) + "0");
+	public Point(Double x, Double y) {
+		this.x = x;
+		this.y = y;
 	}
 
 	public Double getX() {
@@ -47,9 +41,9 @@ public class Point {
 		if(obj.getClass() != Point.class)
 			return false;
 		Point otherPoint = (Point) obj;
-		if(Math.abs(this.x - otherPoint.getX()) > EPSILON)
+		if(!AreDoublesEqual.check(x, otherPoint.getX()))
 			return false;
-		if(Math.abs(this.y - otherPoint.getY()) > EPSILON)
+		if(!AreDoublesEqual.check(y, otherPoint.getY()))
 			return false;
 		return true;
 	}
@@ -61,6 +55,6 @@ public class Point {
 
 	@Override
 	public String toString() {
-		return "Point [x=" + FORMATTER.format(x) + ", y=" + FORMATTER.format(y) + "]";
+		return "Point [x=" + ConfigLoader.FORMATTER.format(x) + "; y=" + ConfigLoader.FORMATTER.format(y) + "]";
 	}
 }

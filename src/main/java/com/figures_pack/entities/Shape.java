@@ -1,6 +1,29 @@
 package com.figures_pack.entities;
 
-public interface Shape {
+import java.util.List;
 
-	int getId();
+public class Shape {
+
+	private int id;
+	protected List<Point> points;
+
+	public Shape() {
+	}
+
+	public Shape(int id) {
+		this.id = id;
+	}
+
+	public Shape(int id, List<Point> points) {
+		this.id = id;
+		this.points = points;
+	}
+
+	public int getId(){
+		return id;
+	}
+
+	public List<Point> getPoints() {
+		return points;
+	}
 }
