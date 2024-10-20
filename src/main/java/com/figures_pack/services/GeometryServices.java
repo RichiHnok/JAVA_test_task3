@@ -22,7 +22,7 @@ public class GeometryServices {
 		return false;
 	}
 
-	private static double crossProduct(Point A, Point B, Point C) {
+	public static double crossProduct(Point A, Point B, Point C) {
 		double ABx = B.getX() - A.getX();
 		double ABy = B.getY() - A.getY();
 		double ACx = C.getX() - A.getX();
