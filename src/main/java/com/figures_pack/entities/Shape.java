@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Shape {
 
-	private int id;
+	protected int id;
 	protected List<Point> points;
 
 	public Shape() {
@@ -25,5 +25,22 @@ public class Shape {
 
 	public List<Point> getPoints() {
 		return points;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Shape [id=" + id + ", points=" + points + "]";
 	}
 }

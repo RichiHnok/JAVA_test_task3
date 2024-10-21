@@ -2,6 +2,7 @@ package com.figures_pack.entities;
 
 import com.figures_pack.configs.ConfigLoader;
 import com.figures_pack.exceptions.AnyValueYException;
+import com.figures_pack.exceptions.PlaceholderException;
 import com.figures_pack.other.AreDoublesEqual;
 
 public class Line {
@@ -17,9 +18,9 @@ public class Line {
 		this.b = b;
 	}
 
-	public Line(Point p1, Point p2) throws Exception{
+	public Line(Point p1, Point p2) throws PlaceholderException{
 		if(p1.equals(p2))
-			throw new Exception(); //TODO
+			throw new PlaceholderException(); //TODO
 		double x1 =  p1.getX(), x2 = p2.getX();
 		double y1 =  p1.getY(), y2 = p2.getY();
 		if(AreDoublesEqual.check(x1 - x2, 0d)){
@@ -32,7 +33,9 @@ public class Line {
 		}
 	}
 
-	public double getA() {
+	public double getA() throws AnyValueYException {
+		if(isVertical)
+			throw new AnyValueYException();
 		return a;
 	}
 
@@ -48,17 +51,11 @@ public class Line {
 		this.b = b;
 	}
 
-	public double getVerticalVal() throws Exception {
+	public double getVerticalVal() throws PlaceholderException {
 		if(!isVertical)
-			throw new Exception();//TODO
+			throw new PlaceholderException();//TODO
 		return verticalVal;
 	}
-
-	@Override
-	public String toString() {
-		return "Line [a=" + ConfigLoader.FORMATTER.format(a) + ", b=" + ConfigLoader.FORMATTER.format(b) + "]";
-	}
-
 	
 	public double findY(double x) throws AnyValueYException{
 		if(isVertical)
@@ -70,4 +67,38 @@ public class Line {
 
 		return (y - b) / a;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(this == obj)
+			return true;
+		if(obj.getClass() != Line.class)
+			return false;
+		Line otherLine = (Line) obj;
+		if(this.isVertical != otherLine.isVertical)
+			return false;
+		if(isVertical){
+			return AreDoublesEqual.check(this.verticalVal, otherLine.verticalVal);
+		}else{
+			try {
+				if(!AreDoublesEqual.check(a, otherLine.getA()))
+					return false;
+			} catch (AnyValueYException e) {
+			}
+			if(!AreDoublesEqual.check(b, otherLine.getB()))
+				return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Line [a=" + ConfigLoader.FORMATTER.format(a) + ", b=" + ConfigLoader.FORMATTER.format(b) + "]";
+	}	
 }

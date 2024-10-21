@@ -80,7 +80,10 @@ public class RectangleServicesTest {
 
 	@Test
 	void testIsRombe() {
-		//TODO
+		assertEquals(true, RectangleServices.isRombe(kvadrat));
+		assertTrue(RectangleServices.isRombe(romboid));
+		assertFalse(RectangleServices.isRombe(trapezoid));
+		assertFalse(RectangleServices.isRombe(vpuklyi));
 	}
 
 	@Test
@@ -92,7 +95,11 @@ public class RectangleServicesTest {
 	}
 
 	@Test
-	void testIsTrapezoid() {
+	void testIsTrapezoid() throws Exception {
 		//TODO
+		assertEquals(false, RectangleServices.isTrapezoid(kvadrat));
+		assertTrue(RectangleServices.isTrapezoid(trapezoid));
+		assertFalse(RectangleServices.isTrapezoid(romboid));
+		assertFalse(RectangleServices.isTrapezoid(vpuklyi));
 	}
 }

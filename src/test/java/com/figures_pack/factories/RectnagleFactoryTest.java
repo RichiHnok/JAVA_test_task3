@@ -1,21 +1,23 @@
 package com.figures_pack.factories;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import com.figures_pack.entities.Point;
+import com.figures_pack.entities.Rectangle;
 import com.figures_pack.entities.Shape;
 import com.figures_pack.exceptions.IncorrectNumberOfPointsHasBeenReceivedAtTheInputException;
+import com.figures_pack.exceptions.PlaceholderException;
+import com.figures_pack.exceptions.PointsDontFormRectangeleException;
 
 public class RectnagleFactoryTest {
 	
 	@Test
-	public void createMethodIdAutIincremntionTest() throws Exception{
+	public void testCreateMethodIdAutoIincremntion() throws Exception{
 		ShapeFactory rectangleFactory = new RectangleFactory();
 
 		List<Point> points1 = new ArrayList<>();
@@ -35,7 +37,6 @@ public class RectnagleFactoryTest {
 		assertEquals(rect2.getId(), 1);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test()
 	public void createExceptionsTest(){
 		Point point1 = new Point(0d, 0d);
@@ -58,20 +59,33 @@ public class RectnagleFactoryTest {
 		points2.add(point5);
 
 		ShapeFactory rectangleFactory = new RectangleFactory();
-		Object[][] paramsList = {
-			new Object[] {points1, IncorrectNumberOfPointsHasBeenReceivedAtTheInputException.class},
-			new Object[] {points2, IncorrectNumberOfPointsHasBeenReceivedAtTheInputException.class},
-			new Object[] {null, NullPointerException.class}
-		};
-		for(Object[] a : paramsList){
-			boolean pass = false;
-			try {
-				rectangleFactory.createShape((List<Point>)a[0]);
-			} catch(Exception e) {
-					pass = e.getClass() == (Class)a[1];
-			}
-			Assert.assertTrue(pass);
-		}
+		assertThrows(IncorrectNumberOfPointsHasBeenReceivedAtTheInputException.class, () -> rectangleFactory.createShape(points1));
+		assertThrows(IncorrectNumberOfPointsHasBeenReceivedAtTheInputException.class, () -> rectangleFactory.createShape(points2));
+		assertThrows(NullPointerException.class, () -> rectangleFactory.createShape(null));
 	}
 
+	@Test
+	void testCreateMethod()
+		throws IncorrectNumberOfPointsHasBeenReceivedAtTheInputException,
+		PointsDontFormRectangeleException,
+		PlaceholderException
+	{
+		ShapeFactory rectangleFactory = new RectangleFactory();
+		List<Point> points1 = Arrays.asList(
+			new Point(0d, 0d),
+			new Point(0d, 1d),
+			new Point(1d, 1d),
+			new Point(1d, 0d)
+		);
+		List<Point> points2 = Arrays.asList(
+			new Point(0d, 1d),
+			new Point(1d, 1d),
+			new Point(1d, 0d),
+			new Point(0d, 0d)
+		);
+		Rectangle expecRec1 = new Rectangle(points1);
+
+		assertEquals(expecRec1, rectangleFactory.createShape(points1));
+		assertEquals(expecRec1, rectangleFactory.createShape(points2));
+	}
 }

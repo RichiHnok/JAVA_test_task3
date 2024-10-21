@@ -1,7 +1,9 @@
 package com.figures_pack.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.figures_pack.entities.Line;
 import com.figures_pack.entities.Point;
 import com.figures_pack.entities.Rectangle;
 import com.figures_pack.other.AreDoublesEqual;
@@ -19,19 +21,35 @@ public class RectangleServices {
 
 			double crossProduct = GeometryServices.crossProduct(p1, p2, p3);
 
-			if (i == 0) {
-					isPositive = crossProduct > 0;
-			} else {
-					if ((crossProduct > 0) != isPositive) {
-						return false;
-					}
+			if(i == 0){
+				isPositive = crossProduct > 0;
+			}else{
+				if((crossProduct > 0) != isPositive)
+					return false;
 			}
 		}
 		return true;
 	}
 
 	public static boolean isSquare(Rectangle rec){
-		//TODO
+		//DONE+
+		if(!isRombe(rec))
+			return false;
+
+		List<Point> points = rec.getPoints();
+		double sideLength = GeometryServices.calcDistBetweenPoints(points.get(0), points.get(1));
+
+		if(!AreDoublesEqual.check(
+			GeometryServices.calcDistBetweenPoints(points.get(0), points.get(2)),
+			Math.sqrt(2)*sideLength
+		)){
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean isRombe(Rectangle rec){
+		//DONE+
 		List<Point> points = rec.getPoints();
 		double sideLength = 0;
 		for(int i = 0; i < 4; i++){
@@ -44,23 +62,23 @@ public class RectangleServices {
 				return false;
 			}
 		}
-
-		if(!AreDoublesEqual.check(
-			GeometryServices.calcDistBetweenPoints(points.get(0), points.get(2)),
-			Math.sqrt(2)*sideLength
-		)){
-			return false;
-		}
 		return true;
 	}
 
-	public static boolean isRombe(Rectangle rec){
+	public static boolean isTrapezoid(Rectangle rec) throws Exception{
 		//TODO
-		return false;
-	}
-
-	public static boolean isTrapezoid(Rectangle rec){
-		//TODO
+		List<Point> points = rec.getPoints();
+		List<Line> lines = new ArrayList<>();
+		for(int i = 0; i < 4; i++)
+			lines.add(new Line(points.get(i%4), points.get((i+1)%4)));
+		
+		if(AreDoublesEqual.check(lines.get(0).getA(), lines.get(2).getA()) &&
+			!AreDoublesEqual.check(lines.get(1).getA(), lines.get(3).getA()) ||
+			AreDoublesEqual.check(lines.get(1).getA(), lines.get(3).getA()) &&
+			!AreDoublesEqual.check(lines.get(0).getA(), lines.get(2).getA())
+		){
+			return true;
+		}
 		return false;
 	}
 	

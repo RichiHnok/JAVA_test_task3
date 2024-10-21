@@ -5,6 +5,7 @@ import java.util.List;
 import com.figures_pack.entities.Line;
 import com.figures_pack.entities.Point;
 import com.figures_pack.exceptions.AnyValueYException;
+import com.figures_pack.exceptions.PlaceholderException;
 import com.figures_pack.other.AreDoublesEqual;
 
 public class GeometryServices {
@@ -30,21 +31,39 @@ public class GeometryServices {
 		return ABx * ACy - ABy * ACx;
 	}
 		
-	public static boolean doLinesIntersect(Line l1, Line l2){
-		if(AreDoublesEqual.check(l1.getA(), l2.getA()))
+	public static boolean doLinesIntersect(Line l1, Line l2) throws Exception{
+		if(l1.equals(l2))
 			return false;
-		return true;
+		return !areLinesParallel(l1, l2);
 	}
 
-	public static boolean areLinesParallel(Line l1, Line l2){
-		if(! AreDoublesEqual.check(l1.getA(), l2.getA()))
+	public static boolean areLinesParallel(Line l1, Line l2) throws Exception{
+		double a1 = 0;
+		double a2 = 0;
+		try {
+			a1 = l1.getA();
+		} catch (AnyValueYException e) {
+			try {
+				a2 = l2.getA();
+			} catch (AnyValueYException e1) {
+				if(AreDoublesEqual.check(l1.getVerticalVal(), l2.getVerticalVal())){
+					return false;
+				}else{
+					return true;
+				}
+			}
+		}
+		try {
+			a2 = l2.getA();
+		} catch (AnyValueYException e) {
 			return false;
-		if(! AreDoublesEqual.check(l1.getB(), l2.getB()))
-			return false;
-		return true;
+		}
+		if(AreDoublesEqual.check(a1, a2))
+			return true;
+		return false;
 	}
 
-	public static boolean isPointOnLine(Point point, Line line) throws Exception{
+	public static boolean isPointOnLine(Point point, Line line) throws PlaceholderException{
 		try {
 			if(AreDoublesEqual.check(line.findY(point.getX()), point.getY()))
 				return true;
@@ -55,10 +74,21 @@ public class GeometryServices {
 		return false;
 	}
 
-	public static Point findLineIntersectionPoint(Line l1, Line l2) throws Exception{
+	public static Point findLinesIntersectionPoint(Line l1, Line l2) throws Exception{
 		if(!doLinesIntersect(l1, l2))
-			throw new Exception(); //TODO Сделать отдельный Exception
-		double a1 = l1.getA(), a2 = l2.getA();
+			throw new Exception(); //TODO Сделать отдельный Exception. Линии не пересекаются
+		
+		double a1 = 0, a2 = 0;
+		try {
+			a1 = l1.getA();
+		} catch (AnyValueYException e) {
+			return new Point(l1.getVerticalVal(), l2.findY(l1.getVerticalVal()));
+		}
+		try {
+			a2 = l2.getA();
+		} catch (AnyValueYException e) {
+			return new Point(l2.getVerticalVal(), l1.findY(l2.getVerticalVal()));
+		}
 		double b1 = l1.getB(), b2 = l2.getB();
 		double x = (b2 - b1) / (a1 - a2);
 		double y = (a1*b2 - b1 * a2) / (a1 - a2);
@@ -72,9 +102,9 @@ public class GeometryServices {
 		return distance;
 	}
 	
-	public static boolean doPointsFormRectnagle(List<Point> points) throws Exception{
+	public static boolean doPointsFormRectnagle(List<Point> points) throws PlaceholderException{
 		if(points.size() < 2 || points.size() > 4)
-			throw new Exception(); //TODO Сделать конкретное исключение
+			throw new PlaceholderException(); //TODO Сделать конкретное исключение
 		//DONE+ Никакие три точки не должны лежать на одной прямой
 		for(int i = 0; i < 4; i++){
 			Point p1 = points.get(i%4);
