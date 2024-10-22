@@ -72,10 +72,10 @@ public class RectangleServices {
 		for(int i = 0; i < 4; i++)
 			lines.add(new Line(points.get(i%4), points.get((i+1)%4)));
 		
-		if(AreDoublesEqual.check(lines.get(0).getA(), lines.get(2).getA()) &&
-			!AreDoublesEqual.check(lines.get(1).getA(), lines.get(3).getA()) ||
-			AreDoublesEqual.check(lines.get(1).getA(), lines.get(3).getA()) &&
-			!AreDoublesEqual.check(lines.get(0).getA(), lines.get(2).getA())
+		if(GeometryServices.areLinesParallel(lines.get(0), lines.get(2)) &&
+			!GeometryServices.areLinesParallel(lines.get(1), lines.get(3)) ||
+			GeometryServices.areLinesParallel(lines.get(1), lines.get(3)) &&
+			!GeometryServices.areLinesParallel(lines.get(0), lines.get(2))
 		){
 			return true;
 		}

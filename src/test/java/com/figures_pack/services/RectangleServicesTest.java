@@ -96,7 +96,6 @@ public class RectangleServicesTest {
 
 	@Test
 	void testIsTrapezoid() throws Exception {
-		//TODO
 		assertEquals(false, RectangleServices.isTrapezoid(kvadrat));
 		assertTrue(RectangleServices.isTrapezoid(trapezoid));
 		assertFalse(RectangleServices.isTrapezoid(romboid));

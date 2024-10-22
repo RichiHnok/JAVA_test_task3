@@ -20,7 +20,7 @@ public class Line {
 
 	public Line(Point p1, Point p2) throws PlaceholderException{
 		if(p1.equals(p2))
-			throw new PlaceholderException(); //TODO
+			throw new PlaceholderException(); //TODO Placeholder Excpetion
 		double x1 =  p1.getX(), x2 = p2.getX();
 		double y1 =  p1.getY(), y2 = p2.getY();
 		if(AreDoublesEqual.check(x1 - x2, 0d)){
@@ -53,13 +53,13 @@ public class Line {
 
 	public double getVerticalVal() throws PlaceholderException {
 		if(!isVertical)
-			throw new PlaceholderException();//TODO
+			throw new PlaceholderException();//TODO Placeholder Excpetion
 		return verticalVal;
 	}
 	
 	public double findY(double x) throws AnyValueYException{
 		if(isVertical)
-			throw new AnyValueYException(); //TODO
+			throw new AnyValueYException(); //TODO Доделать это исключение
 		return a * x + b;
 	}
 

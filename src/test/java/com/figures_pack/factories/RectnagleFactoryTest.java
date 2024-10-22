@@ -70,6 +70,7 @@ public class RectnagleFactoryTest {
 		PointsDontFormRectangeleException,
 		PlaceholderException
 	{
+		// System.out.println("\n\n\nsome message\n\n\n");
 		ShapeFactory rectangleFactory = new RectangleFactory();
 		List<Point> points1 = Arrays.asList(
 			new Point(0d, 0d),
